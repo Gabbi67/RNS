@@ -1,6 +1,8 @@
 import math
+
+import pygame.display
 from pygame.color import THECOLORS
-from source import set
+from source import set, src
 
 
 def angle(x, y, screen_size):
@@ -42,13 +44,41 @@ def signal(x, y, screen_size):
 def color(x, y, screen_size=set.screen_start_size):
     a = angle(x, y, screen_size)
     s = signal(x, y, screen_size)
-    if 89 < a < 91:
-        return THECOLORS["yellow"]
-    elif s > set.min_p and set.range_a[0] < a < set.range_a[1]:
-        return THECOLORS["green"]
-    elif s > set.min_p:
-        return 150, 150, 150
-    elif set.range_a[0] < a < set.range_a[1]:
-        return 100, 100, 100
+    if x > 200 or not y > screen_size[1] - 120:
+        if 89 < a < 91:
+            return THECOLORS["yellow"]
+        elif s > set.min_p and set.range_a[0] < a < set.range_a[1]:
+            return THECOLORS["green"]
+        elif s > set.min_p:
+            return 150, 150, 150
+        elif set.range_a[0] < a < set.range_a[1]:
+            return 100, 100, 100
+        else:
+            return THECOLORS["darkslategrey"]
     else:
-        return THECOLORS["darkslategrey"]
+        return 0
+
+
+def mouse_check(x, y, screen_size=set.screen_start_size):
+    pygame.draw.rect(set.screen, THECOLORS["darkslategray"], (0, screen_size[1] - 114, 200, 114))
+    src.static_bg(screen_size)
+    a = angle(x, y, screen_size)
+    s = signal(x, y, screen_size)
+
+    if set.range_a[0] < a < set.range_a[1]:
+        txt_surface = set.small_font.render("a = " + str(round(a, 2)), True, THECOLORS["chartreuse"])
+        set.screen.blit(txt_surface, (15, screen_size[1] - 100))
+    else:
+        txt_surface = set.small_font.render("a = " + str(round(a, 2)), True, THECOLORS["firebrick1"])
+        set.screen.blit(txt_surface, (15, screen_size[1] - 100))
+
+    if s > set.min_p:
+        txt_surface = set.small_font.render("S/N = " + str(round(s, 2)), True, THECOLORS["chartreuse"])
+        set.screen.blit(txt_surface, (15, screen_size[1] - 50))
+    else:
+        txt_surface = set.small_font.render("S/N = " + str(round(s, 2)), True, THECOLORS["firebrick1"])
+        set.screen.blit(txt_surface, (15, screen_size[1] - 50))
+
+    pygame.display.flip()
+
+

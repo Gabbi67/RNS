@@ -20,6 +20,9 @@ while True:
         if event.type == pygame.WINDOWRESIZED:
             src.screen_resized()
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                src.left_click(pygame.mouse.get_pos(),)
 
 
     pygame.display.flip()
